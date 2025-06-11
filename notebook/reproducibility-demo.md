@@ -1,4 +1,5 @@
 # Reproducibility Testing Workshop
+v1.1 <br>
 2025-06-11 <br>
 BCHM 5420 <br>
 Rex Asis <br>
@@ -36,11 +37,24 @@ cat list.contig3.fasta
 TAGCTAGATCAG
 ```
 
-## Inputs Required
-1. FASTA (.fasta) file containing the multiple contigs
-2. Text (.txt) file containing list of contigs that needs to be extracted from the fasta file
-3. (optional, but convenient) custom bash script (.sh) that combines two commands together
+## Requirements
+1. seqkit v2.10.0
+2. conda environment: contains seqkit
+3. Inputs (see below)
 
+### Input Source
+1. FASTA (.fasta) file(s) containing the multiple contigs (134-newheader.fasta, BFP-newheader.fasta, M4-newheader.fasta) <br>
+
+The assembly files (.fna) were obtained from GenBank, with assembly accession numbers GCA_003231325.2 (Ptr134), GCF_003171515.1 (M4), and GCA_000149985.1 (BFP). These files contain all the contigs associated with the respective Ptr isolates, and their IDs/FASTA Headers were altered for ease of reading (format: accession_isolate_chromosome#_contigname). Finally, file names were also changed to shorten them and extension changed from .fna to .fasta (format: isolate-newheader.fasta).
+
+2. Text (.txt) file containing list of contigs that needs to be extracted from the fasta file (region3.txt) <br>
+
+After performing pairwise whole genome alignments with nf-core/pairgenome align (e.g., Figure 1), the contigs associated with the gaps were added to a text file, using the exact ID/FASTA header of the contigs.
+
+![pairgenomealign-example.png](reproducibility-demo_files/pairgenomealign-example.png)
+**Figure 1**: Whole genome alignment between Ptr134 and M4. Highlighted in the green circle is a gap in alignment of the two isolates. The green boxes represent the respective contigs in each isolate that is associated with this gap.
+
+3. (optional, but convenient) custom bash script that combines two commands together (seqkit-extract-v2025.06.08.sh). We will be using this script for this demo.
 
 ## Steps
 All commands will be ran in bash.
@@ -85,7 +99,8 @@ cat *.fasta > ptr-genomes.fasta
 
 
 ```python
-cd /your/path/info/BCHM5420-project-demo/
+cd /your/path/info/BCHM5420-project-demo/ # OR
+cd ..
 mkdir -p outputs/seqkit # makes a directory called 'outputs', then another directory within 'outputs', called seqkit 
 ```
 
@@ -229,3 +244,10 @@ bash seqkit-extract-v2025.06.08.sh region3
 ```
 
 Rinse and repeat. You can imagine that this script can be used to locate a new set of contigs. The names of these contigs should be added to a new text file, such as 'newcontigs'. With this new file, we just have to replace $1 (aka 'region3' in the demo above) with 'newcontigs'
+
+## Revision History
+
+| Date       | Version | Author        | Description of Update                                      |
+|------------|---------|---------------|-------------------------------------------------------------|
+| 2025-06-10 | v1.0    | Rex Asis   | Initial draft created with documentation structure.         |
+| 2025-06-11 | v1.1    | Rex Asis  | Added requirements and input sources   |
